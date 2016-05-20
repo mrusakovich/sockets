@@ -2,6 +2,15 @@ var socket = io();
 
 socket.on("connect", () => {
     console.log("Connected to socket.io server");
+    var $form = $("#message-form");
+
+    $form.on("submit", (event) => {
+        event.preventDefault();
+        socket.emit("message", {
+            text: $form.find("input[name='message']").val()
+        });
+        $form.find("input[name='message']").val("");
+    });
 });
 
 socket.on("message", (message) => {

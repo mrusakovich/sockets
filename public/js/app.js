@@ -17,3 +17,11 @@ socket.on("connect", () => {
 socket.on("message", (message) => {
     $("#messages").append("<p> him: "+ message.text +"</p>");
 });
+socket.on("leave", message => {
+    $("#messages").append("<p>"+ message +"</p>");
+});
+window.onunload = () => {
+    socket.emit("leave", {
+        text: "he just leaved chat."
+    });
+};

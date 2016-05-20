@@ -6,14 +6,12 @@ var io = require("socket.io")(http);
 
 app.use(express.static(__dirname + "/public"));
 
-io.on("connection", (socket) => {
-    console.log("User connected via socket.io");
-    // socket.emit("message", {
-    //     text: "Chatting started!"
-    // });
-    socket.on("message", (message) => {
-        console.log(message);
+io.on("connection", socket => {
+    socket.on("message", message => {
         socket.broadcast.emit("message", message);
+    });
+    socket.on("leave", user => {
+        socket.broadcast.emit("leave", user.text);
     });
 });
 

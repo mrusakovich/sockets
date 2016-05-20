@@ -4,14 +4,22 @@ var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 
+var clients = [];
+
 app.use(express.static(__dirname + "/public"));
 
 io.on("connection", socket => {
+    clients.push(socket);
     socket.on("message", message => {
         socket.broadcast.emit("message", message);
     });
     socket.on("leave", user => {
+        var i = clients.indexOf(socket);
+        clients.splice(i, 1)
         socket.broadcast.emit("leave", user.text);
+    });
+    socket.on("entering", user => {
+        socket.broadcast.emit("entering", user);
     });
 });
 

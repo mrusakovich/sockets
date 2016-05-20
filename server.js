@@ -8,9 +8,9 @@ app.use(express.static(__dirname + "/public"));
 
 io.on("connection", (socket) => {
     console.log("User connected via socket.io");
-    socket.emit("message", {
-        text: "Chatting started!"
-    });
+    // socket.emit("message", {
+    //     text: "Chatting started!"
+    // });
     socket.on("message", (message) => {
         console.log(message);
         socket.broadcast.emit("message", message);

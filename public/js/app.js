@@ -9,12 +9,11 @@ socket.on("connect", () => {
         socket.emit("message", {
             text: $form.find("input[name='message']").val()
         });
+        $("#messages").append("<p>me: "+ $form.find("input[name='message']").val() +"</p>")
         $form.find("input[name='message']").val("");
     });
 });
 
 socket.on("message", (message) => {
-    $("h3").text(message.text);
-    console.log(message);
-    console.log(message.text);
+    $("#messages").append("<p> him: "+ message.text +"</p>");
 });

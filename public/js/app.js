@@ -1,5 +1,8 @@
+var io = require("io");
+var moment = require("moment");
 var socket = io();
 var user = {};
+
 socket.on("connect", () => {
     console.log("Connected to socket.io server");
     var $form = $("#message-form");
@@ -10,13 +13,13 @@ socket.on("connect", () => {
             username: user.name,
             text: $form.find("input[name='message']").val()
         });
-        $("#messages").append("<p>you: " + $form.find("input[name='message']").val() +"</p>")
+        $("#messages").append("<p>" + moment().format("DD-MM-YYYY HH:mm:ss") + " | you: " + $form.find("input[name='message']").val() +"</p>")
         $form.find("input[name='message']").val("");
     });
 });
 
 socket.on("message", (message) => {
-    $("#messages").append("<p>"+ message.username + ": " + message.text +"</p>");
+    $("#messages").append("<p>" + message.time + " | " + message.username + " said: " + message.text +"</p>");
 });
 socket.on("leave", message => {
     $("#messages").append("<p>"+ message +"</p>");

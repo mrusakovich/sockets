@@ -3,6 +3,7 @@ var express = require("express");
 var app = express();
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
+var moment = require("moment");
 
 var clients = [];
 
@@ -11,6 +12,7 @@ app.use(express.static(__dirname + "/public"));
 io.on("connection", socket => {
     clients.push(socket);
     socket.on("message", message => {
+        message.time = moment().format("DD-MM-YYYY HH:mm:ss");
         socket.broadcast.emit("message", message);
     });
     socket.on("leave", user => {

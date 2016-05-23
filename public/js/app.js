@@ -32,19 +32,17 @@ window.onunload = () => {
     });
 };
 
-$(document).ready(()=> {
-    $("#name-form").on("submit", () => {
-        event.preventDefault();
-        if ( $("#name").val().length > 0 ){
-            user.name = $("#name").val();
-            socket.emit("entering", {
-                name: user.name
-            });
-            $("#name-form").css("display","none");
-            $("#message-form").css("display", "block");
-            $("#messages").css("display", "block");
-        }else{
-            return false;
-        }
-    });
+$("#name-form").on("submit", () => {
+    event.preventDefault();
+    if ( $("#name").val().length > 0 ){
+        user.name = $("#name").val();
+        socket.emit("entering", {
+            name: user.name
+        });
+        $("#name-form").css("display","none");
+        $("#message-form").css("display", "block");
+        $("#messages").css("display", "block");
+    }else{
+        return false;
+    }
 });

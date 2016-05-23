@@ -3,20 +3,15 @@ define(function (require) {
 });
 
 function App($, socket, moment) {
-
     var user = {};
     socket.on("connect", () => {
         console.log("Connected to socket.io server");
-        var $form = $("#message-form");
 
-        $form.on("submit", (event) => {
-            event.preventDefault();
-            socket.emit("message", {
-                username: user.name,
-                text: $form.find("input[name='message']").val()
-            });
-            $("#messages").append("<p>" + moment().format("DD-MM-YYYY HH:mm:ss") + " | you: " + $form.find("input[name='message']").val() + "</p>")
-            $form.find("input[name='message']").val("");
+        $("#message-form").on("submit", (event) => {
+            onSend(event);
+        });
+        $("#msgSubmit").click((event) => {
+            onSend(event);
         });
     });
 
@@ -37,7 +32,15 @@ function App($, socket, moment) {
         });
     };
 
-    $("#name-form").on("submit", () => {
+    $("#name-form").on("submit", (event) => {
+        onSubmit(event);
+    });
+
+    $("#submitName").click((event) => {
+        onSubmit(event);
+    });
+
+    function onSubmit(event) {
         event.preventDefault();
         if ($("#name").val().length > 0) {
             user.name = $("#name").val();
@@ -50,5 +53,16 @@ function App($, socket, moment) {
         } else {
             return false;
         }
-    });
+    }
+
+    function onSend(event) {
+        event.preventDefault();
+        socket.emit("message", {
+            username: user.name,
+            text: $("#message-form").find("input[name='message']").val()
+        });
+        $("#messages").append("<p>" + moment().format("DD-MM-YYYY HH:mm:ss") + " | you: " + $("#message-form").find("input[name='message']").val() + "</p>")
+        $("#message-form").find("input[name='message']").val("");
+    }
+
 }
